@@ -1,9 +1,8 @@
 [![Slack Status](http://slack.sparkpost.com/badge.svg)](http://slack.sparkpost.com)
 
 This is a SendGrid to SparkPost email template migration tool.
-It supports translation of SendGrid's Handlebars syntax into equivalent SparkPost syntax.
 
-The tool presents a simple web UI for migrating templates directly from your sendgrid account to SparkPost as well as translating sendgrid template text directly into its SparkPost equivalent.
+The tool presents a simple web UI for migrating templates directly from your SendGrid account to SparkPost as well as translating SendGrid template text directly into its SparkPost equivalent.
 
 If you want to automate your migration, the tool also has an API.
 
@@ -78,7 +77,9 @@ POST /api/translate HTTP/1.1
 Content-Type: application/json
 
 {
-  "sendgridTemplate": "..."
+  "sendgridTemplate": "string",
+  "beginDelimiter": "string",
+  "endingDelimiter": "string"
 }
 ```
 
@@ -89,7 +90,7 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "sparkPostTemplate": "..."
+  "sparkPostTemplate": "string"
 }
 ```
 
@@ -106,9 +107,12 @@ POST /api/migrate HTTP/1.1
 Content-Type: application/json
 
 {
-  "sendgridAPIKey": "...",
-  "sendgridTemplateName": "...",
-  "sparkPostAPIKey": "..."
+  "sendgridAPIKey": "string",
+  "sendgridTemplateId": "string",
+  "sengridIsCampaign": "boolean"
+  "sparkPostAPIKey": "string",
+  "useHerokuSPAPIKey": "boolean",
+  "useSandboxDomain": "boolean"
 }
 ```
 
