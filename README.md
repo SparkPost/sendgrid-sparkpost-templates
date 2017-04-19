@@ -23,7 +23,7 @@ You need provide the names of the custom delimited variables during translation.
 
 ## Heroku Deployment
 
-You can deploy it directly to Heroku: [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
+You can deploy it directly to Heroku: [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/SparkPost/sendgrid-sparkpost-templates/tree/develop)
 
 ## Manual Deployment
 
