@@ -1,0 +1,148 @@
+body {
+  padding: 0;
+  margin: 0;
+  background-color: white;
+}
+
+* {
+  border-radius: 0 !important;
+}
+
+li {
+  padding-bottom: 0.5em;
+}
+
+.jumbotron {
+  background-color: #fff;
+  padding: 0;
+  margin: 0;
+}
+
+.jumbotron h2 {
+  text-align: center;
+  color: #fa6423;
+  margin-top: 0;
+  padding-top: 40px;
+}
+
+.jumbotron p {
+  text-align: center;
+  margin-bottom: 0;
+  padding-bottom: 1.5em;
+  color: #414146;
+}
+
+.jumbotron .btn {
+  background-color: #fa6423;
+  border-color: #fa6423;
+}
+
+.supported {
+  background-color: #eee;
+  border-style: solid;
+  border-width: 1px;
+  border-color: #ccc;
+  padding-left: 2em;
+  padding-top: 1em;
+  height: 25em;
+}
+
+.unsupported {
+  background-color: #eee;
+  border-style: solid solid solid none;
+  border-width: 1px;
+  border-color: #ccc;
+  padding-left: 2em;
+  padding-top: 1em;
+  height: 25em;
+}
+
+.supported h4 {
+  text-size: 12pt;
+  color: #9bcd5a;
+  padding-left: 2em;
+}
+
+.unsupported h4 {
+  text-size: 12pt;
+  color: #0097b3;
+  padding-left: 2em;
+}
+
+.supported ul {
+  list-style: none;
+}
+
+.unsupported ul {
+  list-style: none;
+}
+
+.supported li:before {
+  font-family: FontAwesome;
+  content: "\f058";
+  color: #9bcd5a;
+  padding-right: 0.5em;
+}
+
+.unsupported li:before {
+  font-family: FontAwesome;
+  content: "\f057";
+  color: #0097b3;
+  padding-right: 0.5em;
+}
+
+.titlebar {
+  min-height: 80px;
+  margin-bottom: 0px;
+  background-color: #fa6423;
+  font-family: "Helvetica Neue";
+  font-weight: 500;
+  font-size: 12px;
+}
+
+.navbar-logo {
+  display: block;
+  padding-top: 1em;
+  margin: auto;
+}
+
+body.loading:after {
+  /* with no content, nothing is rendered */
+  content: "";
+  position: fixed;
+  /* element stretched to cover during rotation an aspect ratio up to 1/10 */
+  top: -500%;
+  left: -500%;
+  right: -500%;
+  bottom: -500%;
+  z-index: 9999;
+  pointer-events: none;
+  /* background */
+  background-color: rgba(0,0,0,0.6);
+  background-image: url(spinner.png);
+  background-repeat: no-repeat;
+  background-position: center center;
+  background-size: 100px 100px;
+  /* animation */
+  -webkit-animation-name: linearRotate;
+  -webkit-animation-duration: 1s;
+  -webkit-animation-iteration-count: infinite;
+  -webkit-animation-timing-function: linear;
+}
+
+@-webkit-keyframes linearRotate {
+  from {
+    -webkit-transform:rotate(0deg);
+  }
+  to {
+    -webkit-transform:rotate(360deg);
+  }
+}
+
+.ace_editor {
+  height: 30em;
+}
+
+.table-migrate-notes td {
+  padding-left: 15px;
+}

@@ -1,0 +1,8 @@
+test.js
+node_modules
+vendor
+npm-debug.log
+notes.txt
+exploration
+.idea/
+.DS_Store
