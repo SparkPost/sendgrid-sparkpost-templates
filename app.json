@@ -1,7 +1,7 @@
 {
   "name": "SendGrid To SparkPost Template Migration",
   "description": "Automatically extract, translate and import SendGrid templates into SparkPost",
-  "repository": "https://github.com/SparkPost/sendgrid-sparkpost-templates.git",
+  "repository": "https://github.com/SparkPost/sendgrid-sparkpost-templates",
   "keywords": ["sparkpost", "sendgrid", "template", "migration"],
   "addons": [
     "sparkpost"
