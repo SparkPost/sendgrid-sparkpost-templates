@@ -1,6 +1,6 @@
 'use strict';
 
-var ctrl = require('../lib')
+var ctrl = require('../lib/translate')
 , router = require('express').Router();
 
 router.post('/', function(req, res) {

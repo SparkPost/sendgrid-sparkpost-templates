@@ -1,6 +1,6 @@
 'use strict';
 
-var ctrl = require('../lib')
+var ctrl = require('../lib/translate')
 
   , extractSendgridTemplate = require('../lib/sendgrid')
   , storeSparkPostTemplate = require('../lib/sparkpost')
