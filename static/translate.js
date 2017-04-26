@@ -7,7 +7,7 @@ var mdrlTranslationApp = angular.module('mdrlTranslationApp',
 translationControllers.controller('TranslatorControl', ['$scope', '$http', '$log', '$sce',
   function($scope, $http, $log, $sce) {
     $scope.loading = false;
-    $scope.mdlEditor = null;
+    $scope.sgEditor = null;
     $scope.spEditor = null;
 
     function configureEditor(editor) {
@@ -30,25 +30,34 @@ translationControllers.controller('TranslatorControl', ['$scope', '$http', '$log
       configureEditor(editor);
     };
 
-    $scope.mdlEditorLoaded = function(editor) {
-      $scope.mdlEditor = editor;
+    $scope.sgEditorLoaded = function(editor) {
+      $scope.sgEditor = editor;
       configureEditor(editor);
     };
 
     $scope.translate = function() {
-      if (!$scope.spEditor || !$scope.mdlEditor) {
+      if (!$scope.spEditor || !$scope.sgEditor) {
         console.log('Editors not initialised!');
         return;
       }
+      var sgTemplate = $scope.sgEditor.getValue();
+      if(!sgTemplate) {
+        showError('Empty SendGrid Template');
+        return;
+      }
+      console.log($scope.startingDelimiter);
       $scope.spEditor.setValue('');
       $scope.loading = true;
       $http({
         method: 'POST',
         url: '/api/translate',
         data: {
-          sendgridTemplate: $scope.mdlEditor.getValue(),
-          beginDelimiter: $scope.beginDelimiter,
-          endingDelimiter: $scope.endingDelimiter
+          sendgridTemplate: sgTemplate,
+          options: {
+            isCampaign: !!$scope.marketingTemplate,
+            startingDelimiter: $scope.startingDelimiter,
+            endingDelimiter: $scope.endingDelimiter ? $scope.startingDelimiter : undefined
+          }
         }
       }).then(function(result) {
         if (result.errors) {

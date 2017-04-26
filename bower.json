@@ -3,7 +3,8 @@
   "description": "",
   "main": "index.js",
   "authors": [
-    "Mohammad Hossain <mohammad.hossain@sparkpost.com>"
+    "Ewan Dennis <ewandennis@users.noreply.github.com>",
+    "Mohammad Hossain <rajumsys@users.noreply.github.com>"
   ],
   "license": "Apache 2.0",
   "homepage": "https://github.com/SparkPost/sendgrid-sparkpost-templates.git",

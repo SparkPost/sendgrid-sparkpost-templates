@@ -8,18 +8,17 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
     $scope.loading = false;
     $scope.sgAPIKey = '';
     $scope.sgTpl = '';
+    $scope.startingDelimiter = null;
     $scope.marketingTemplate = false;
     $scope.spAPIKey = '';
     $scope.useHerokuSPAPIKey = false;
     $scope.useSandboxDomain = true;
-    $scope.sandboxDomain = '';
+    $scope.sandboxDomain = 'sparkpostbox.com'; //TODO make it configurable?
 
-    $http.get('/api/sandboxDomain').then(function(result) {
-      $scope.sandboxDomain = result.data.sandboxDomain;
-    }).catch(function(err) {
-      $scope.sandboxDomain = 'sparkpostbox.com';
-      console.log('While GETting from /api/sandboxDomain: ');
-      console.error(err);
+    $scope.$watch('marketingTemplate', function(newValue){
+      if(!newValue){
+        $scope.useSandboxDomain = true;
+      }
     });
 
     $scope.migrate = function(formIsValid) {
@@ -27,16 +26,22 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
         return;
       }
       $scope.loading = true;
+      var options = {
+        useHerokuSPAPIKey: !!$scope.useHerokuSPAPIKey,
+        isSendgridCampaign: !!$scope.marketingTemplate,
+        useSandboxDomain: !!$scope.useSandboxDomain,
+        startingDelimiter: $scope.marketingTemplate ? undefined : $scope.startingDelimiter,
+        endingDelimiter: !$scope.marketingTemplate && $scope.endingDelimiter ? $scope.startingDelimiter : undefined
+      };
+
       $http({
         method: 'POST',
         url: '/api/migrate',
         data: {
           sendgridAPIKey: $scope.sgAPIKey,
           sendgridTemplateId: $scope.sgTpl,
-          sengridIsCampaign: $scope.marketingTemplate,
-          useHerokuSPAPIKey: $scope.useHerokuSPAPIKey,
           sparkPostAPIKey: $scope.spAPIKey,
-          useSandboxDomain: $scope.useSandboxDomain
+          options: options
         }
       }).then(function(result) {
         if (result.errors) {

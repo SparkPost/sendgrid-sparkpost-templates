@@ -69,11 +69,24 @@
               <div class="form-group">
                 <div class="checkbox">
                   <label for="marketingTemplate">
-                    <input type="checkbox" ng-model="marketingTemplate" name="useHerokuSPAPIKey" id="marketingTemplate"> Migrating Marketing Campaign?
+                    <input type="checkbox" ng-model="marketingTemplate" name="marketingTemplate" id="marketingTemplate"> Migrating Marketing Campaign?
                   </label>
                 </div>
                 <label for="sgTpl">SendGrid {{ marketingTemplate ? 'Campaign' : 'Template' }} ID <span class="text-warning" ng-show="migrateFrm.sgTpl.$touched && migrateFrm.sgTpl.$invalid">1+ chars required</span></label>
                 <input ng-disabled="loading" type="text" ng-model="sgTpl" ng-minlength="1" required class="form-control" name="sgTpl" />
+
+              </div>
+
+              <div class="form-group" ng-show="!marketingTemplate">
+                  <label> Starting delimiter
+                    <input type="text" ng-model="startingDelimiter" />
+                  </label>
+                  <label> Has ending delimiter?
+                    <input type="checkbox" ng-model="endingDelimiter" name="endingDelimiter" id="endingDelimiter">
+                  </label>
+                  <div ng-show="startingDelimiter">
+                    Example: <strong>{{startingDelimiter}}tag{{ endingDelimiter ? startingDelimiter : null}}</strong>
+                  </div>
               </div>
 
               <div class="form-group">
@@ -88,7 +101,8 @@
                 </div>
                 <div class="checkbox">
                   <label for="useSandboxDomain">
-                    <input type="checkbox" ng-model="useSandboxDomain" name="useSandboxDomain" id="useSandboxDomain"> Use sandbox domain <code>{{sandboxDomain}}</code> as the from address
+                    <input type="checkbox" ng-model="useSandboxDomain" name="useSandboxDomain" id="useSandboxDomain" ng-disabled="!marketingTemplate"
+                    > Use sandbox domain <code>{{sandboxDomain}}</code> as the from address
                   </label>
                 </div>
               </div>

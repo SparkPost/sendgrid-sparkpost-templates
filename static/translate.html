@@ -27,7 +27,7 @@
     <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
     <script src="translate.js"></script>
   </head>
-  <body ng-controller="TranslatorControl">
+  <body ng-controller="TranslatorControl as ctrl">
     <div class="titlebar">
       <a href="https://www.sparkpost.com">
         <img class="navbar-logo" src="https://developers.sparkpost.com/images/logo-sparkpost-white.png" alt="SparkPost" width="150">
@@ -42,11 +42,7 @@
             <p>From here you can translate a template from SendGrid to SparkPost. To get started, paste your SendGrid template into the editor on the left below.</p>
           </div>
         </div>
-        <div class="row">
-          <div class="col-md-2 col-md-offset-5 text-center">
-            <button ng-disabled="loading" ng-click="translate()" class="btn btn-success btn-lg">Translate!</button>
-          </div>
-        </div>
+
       </div>
       <div class="row">
         <div class="col-md-8 col-md-offset-2">
@@ -58,22 +54,40 @@
       </div>
       <div class="row">
         <div class="col-sm-6">
-          <h3>SendGrid Template</h3>
-          <div id="sendgridEditor" ui-ace="{mode:'handlebars', onLoad: mdlEditorLoaded}"></div>
+          <h3>SendGrid Template
+            <small>
+                <label for="marketingTemplate">
+                  <input type="checkbox" ng-model="marketingTemplate" name="marketingTemplate" id="marketingTemplate"> Marketing Campaign?
+                </label>
+            </small>
+          </h3>
+          <div id="sendgridEditor" ui-ace="{onLoad: sgEditorLoaded}"></div>
 
-          <label>Custom delimiter<br/>
-            <small></small>
-            <label> Starting delimiter
-              <input type="text" ng-model="beginDelimiter" />
-            </label>
-            <label> Ending delimiter
-              <input type="text" ng-model="endingDelimiter" />
-            </label>
-          </label>
-        </div> 
+
+
+          <div ng-show="!marketingTemplate">
+              Custom delimiter<br/>
+                <label> Starting delimiter
+                  <input type="text" ng-model="startingDelimiter" />
+                </label>
+                <label> Has ending delimiter?
+                  <input type="checkbox" ng-model="endingDelimiter" name="endingDelimiter" id="endingDelimiter">
+                </label>
+              <div ng-show="startingDelimiter">
+                Example: <strong>{{startingDelimiter}}tag{{ endingDelimiter ? startingDelimiter : null}}</strong>
+              </div>
+          </div>
+
+
+        </div>
         <div class="col-sm-6">
           <h3>SparkPost Template</h3>
-          <div id="sparkPostEditor" ui-ace="{mode:'handlebars', onLoad: spEditorLoaded}" readonly></div>
+          <div id="sparkPostEditor" ui-ace="{ onLoad: spEditorLoaded}" readonly></div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-2 col-md-offset-5 text-center">
+          <button ng-disabled="loading" ng-click="translate()" class="btn btn-success btn-lg">Translate!</button>
         </div>
       </div>
     </div>

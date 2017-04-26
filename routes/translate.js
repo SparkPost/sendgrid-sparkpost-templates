@@ -1,32 +1,33 @@
 'use strict';
 
-var ctrl = require('../lib/translate')
-, router = require('express').Router();
+let _ = require('lodash')
+  , transactional = require('../lib/transactional')
+  , campaign = require('../lib/campaign')
+  , errors = require('../lib/errors')
+  , router = require('express').Router();
 
-router.post('/', function(req, res) {
-  var tpl;
+router.post('/', function (req, res) {
+  let isSendgridCampaign = !!_.get(req, 'body.options.isCampaign')
+    , options = req.body.options
+    , translatedTemplate;
 
-  // request: sendgridTemplate: string
   if (!req.body.hasOwnProperty('sendgridTemplate')) {
     res.clientError('Request must include a "sendgridTemplate" field containing template');
     return;
   }
 
-  try {
-   tpl = ctrl.translateTemplate({
-     html: req.body.sendgridTemplate,
-     subject: '<%subject%>'
-   }, {
-     beginDelimiter: req.body.beginDelimiter,
-     endingDelimiter: req.body.endingDelimiter
-   });
 
-    console.log(tpl);
-    // Response
-    res.json({sparkPostTemplate: tpl.html});
+  try {
+    if (isSendgridCampaign) {
+      translatedTemplate = campaign.translateText(req.body.sendgridTemplate);
+    } else {
+      translatedTemplate = transactional.translateText(req.body.sendgridTemplate, _.pick(options, ['startingDelimiter', 'endingDelimiter']));
+    }
+
+    res.json({sparkPostTemplate: translatedTemplate});
 
   } catch (err) {
-    if (!ctrl.errorResponse(err, res)) {
+    if (!errors.errorResponse(err, res)) {
       err.message = 'Unexpected error: ' + err;
       res.serverError(err);
       throw err;
