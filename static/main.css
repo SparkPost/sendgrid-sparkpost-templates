@@ -38,43 +38,40 @@ li {
 }
 
 .supported {
-  background-color: #eee;
-  border-style: solid;
-  border-width: 1px;
-  border-color: #ccc;
-  padding-left: 2em;
-  padding-top: 1em;
-  height: 25em;
+  /*background-color: #eee;*/
+  /*border-style: solid;*/
+  /*border-width: 1px;*/
+  /*border-color: #ccc;*/
+  /*padding-left: 2em;*/
+  /*padding-top: 1em;*/
+  /*height: 25em;*/
 }
 
 .unsupported {
-  background-color: #eee;
-  border-style: solid solid solid none;
-  border-width: 1px;
-  border-color: #ccc;
-  padding-left: 2em;
-  padding-top: 1em;
-  height: 25em;
+  /*background-color: #eee;*/
+  /*border-style: solid solid solid none;*/
+  /*border-width: 1px;*/
+  /*border-color: #ccc;*/
+  /*padding-left: 2em;*/
+  /*padding-top: 1em;*/
+  /*height: 25em;*/
 }
 
 .supported h4 {
   text-size: 12pt;
   color: #9bcd5a;
-  padding-left: 2em;
+  /*padding-left: 2em;*/
 }
 
 .unsupported h4 {
   text-size: 12pt;
   color: #0097b3;
-  padding-left: 2em;
+  /*padding-left: 2em;*/
 }
 
-.supported ul {
+.supported, .unsupported {
   list-style: none;
-}
-
-.unsupported ul {
-  list-style: none;
+  padding-left: 0;
 }
 
 .supported li:before {
@@ -145,4 +142,7 @@ body.loading:after {
 
 .table-migrate-notes td {
   padding-left: 15px;
+}
+.pull-center {
+  text-align: center;
 }

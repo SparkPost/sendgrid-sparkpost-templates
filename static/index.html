@@ -39,38 +39,73 @@
         </p>
     </div>
     <div class="row">
-        <div class="col-sm-6 supported">
-            <h4>Supported Features</h4>
-            <ul>
-                <li><strong>Sections</strong><br>
-                    <ul>
-                        <li><%subject%>, <%body%></li>
-                        <li>[Sender_Name], [Sender_Name], [Sender_Address], [Sender_City], [Sender_State],
-                            [Sender_Zip]
-                        </li>
-                        <li>[Weblink]</li>
-                        <li>[%email%]</li>
-                        <li>[%custom_field%], [%custom_field | default value%]</li>
+        <div class="col-sm-6">
+            <h4 class="pull-center">Transactional Templates</h4>
+            <table class="table table-striped">
+                <tr>
+                    <td>Supported features</td>
+                    <td>Unsupported features</td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul class="supported">
+                            <li><%subject%></li>
+                            <li><%body%></li>
+                            <li><%asm_global_unsubscribe_url%><br/><small>(see note below)</small>
+                            </li>
+                            <li>Custom delimited variables<br/>
+                                <small>
+                                    You need to provide the custom delimiters during translation.
+                                    <br/>Only one type of delimiter is supported.
+                                </small>
+                            </li>
+                        </ul>
 
-                    </ul>
-                </li>
-                <li><strong>Needs extra info (Links after translation is done)</strong><br>
-                    <ul>
-                        <li><%asm_global_unsubscribe_url%></li>
-                        <li>[Unsubscribe]</li>
-                    </ul>
-                </li>
-                <li><strong>User delimited variables</strong><br> You need to specify the custom delimiters that you've used in your template.
-                </li>
-            </ul>
+                    </td>
+                    <td>
+                        <ul class="unsupported">
+                            <li><%asm_group_unsubscribe_url%></li>
+                            <li><%asm_preferences_url%></li>
+                        </ul>
+                    </td>
+
+                </tr>
+            </table>
         </div>
-        <div class="col-sm-6 unsupported">
-            <h4>Unsupported Features</h4>
-            <ul>
-                <li><%asm_group_unsubscribe_url%></li>
-                <li><%asm_preferences_url%></li>
-                <li>[Unsubscribe_Preferences]</li>
-            </ul>
+        <div class="col-sm-6">
+            <h4 class="pull-center">Marketing Campaign Templates</h4>
+            <table class="table table-striped">
+                <tr>
+                    <td>Supported features</td>
+                    <td>Unsupported features</td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul class="supported">
+                            <li>Sender Fields<br/>
+                                <small>[Sender_Name], [Sender_Name], [Sender_Address], [Sender_City], [Sender_State],
+                                    [Sender_Zip]
+                                </small>
+                            </li>
+                            <li>[Unsubscribe]<br/><small>(see note below)</small></li>
+                            <li>[Weblink]</li>
+                            <li>[%email%]</li>
+                            <li>[%custom_field%], [%custom_field | default value%]</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="unsupported">
+                            <li>[Unsubscribe_Preferences]</li>
+                        </ul>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            Note: You'll need replace placeholder (?) with actual URL after translation.<br/>
         </div>
     </div>
 </div>
