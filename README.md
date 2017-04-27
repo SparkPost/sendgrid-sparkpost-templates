@@ -8,18 +8,31 @@ If you want to automate your migration, the tool also has an API.
 
 See below for details on [deployment on Heroku](#heroku-deployment), [manual deployment](#manual-deployment) and [API use](#the-api).
 
-## Supported Features
-- <%subject%>, <%body%>
-- Sender Info
-- [Weblink]
-- [%email%]
-- [%custom_field%], [%custom_field | default value%]
+## Transactional Templates
 
-## Unsupported Features
-- <%asm_global_unsubscribe_url%>
-- [Unsubscribe]
-- _User delimited variables_
-You need provide the names of the custom delimited variables during translation. Only one type of delimiter is supported. 
+| Supported 	                        | Unsupported 	                      |
+|:------------------------------------|:----------------------------- 	    |
+| `<%subject%>`              	        | `<%asm_group_unsubscribe_url%>` 	
+| `<%body%>` 	                        | `<%asm_preferences_url%>` 	
+| `<%asm_global_unsubscribe_url%>`*   | |
+| Custom delimited variables**   | |
+
+\* Extra inputs required
+
+## Marketing Campaigns
+
+| Supported 	                        | Unsupported 	                      |
+|:------------------------------------|:----------------------------- 	    |
+|Sender Fields <br/> `[Sender_Name], [Sender_Name], [Sender_Address], [Sender_City], [Sender_State],[Sender_Zip]` | `[Unsubscribe_Preferences]`
+|`[Unsubscribe]*`                      | |
+|`[Weblink]`                          | |
+|`[%email%]`                          | |
+|<code>[%custom_field%]`, `[%custom_field &#124; default value%]</code> | |
+
+\* You need to replace placeholder (`?`) after translation
+
+\** You need specify the custom delimiters during translation. Only one type of delimiter is supported.
+
 
 ## Heroku Deployment
 
@@ -35,7 +48,7 @@ If you prefer you can deploy it into your own environment using the instructions
  - npm 3.0+
 
 ```bash
-git clone --recursive https://github.com/SparkPost/sendgrid-sparkpost-templates.git
+git clone https://github.com/SparkPost/sendgrid-sparkpost-templates.git
 cd sendgrid-sparkpost-templates
 npm install
 npm run start
@@ -53,19 +66,6 @@ Once deployed, you can migrate templates between services or translate template 
 
 If you prefer direct API access or you want to automate your template migration, here's how the API endpoints work.
 
-### API Errors
-
-On error, the API endpoints will return a non-200 status code and a JSON error object containing a list of errors:
-
-```json
-{
-  "errors": [
-    {"message": "Description of a thing that did not work."},
-    {"message": "..."}
-  ]
-}
-```
-
 ### /api/translate: Template Translation
 
 Accept a SendGrid template and convert it SparkPost format.
@@ -76,11 +76,13 @@ Request:
 POST /api/translate HTTP/1.1
 Content-Type: application/json
 
-{
-  "sendgridTemplate": "string",
-  "beginDelimiter": "string",
-  "endingDelimiter": "string"
+sendgridTemplate: "string",
+options: {
+  isCampaign: "boolean",
+  startingDelimiter: "string",
+  endingDelimiter: "string"
 }
+
 ```
 
 Successful response:
@@ -107,13 +109,18 @@ POST /api/migrate HTTP/1.1
 Content-Type: application/json
 
 {
-  "sendgridAPIKey": "string",
-  "sendgridTemplateId": "string",
-  "sengridIsCampaign": "boolean"
-  "sparkPostAPIKey": "string",
-  "useHerokuSPAPIKey": "boolean",
-  "useSandboxDomain": "boolean"
+  sendgridAPIKey: "string",
+  sendgridTemplateId: "string",
+  sparkPostAPIKey: "string",
+  options: {
+    useHerokuSPAPIKey: "boolean",
+    isSendgridCampaign: "boolean",
+    useSandboxDomain: "boolean",
+    startingDelimiter: "string"
+    endingDelimiter: "string"
+  }
 }
+
 ```
 
 Successful response:
@@ -124,6 +131,19 @@ Content-Type: application/json
 
 {
   "result": true
+}
+```
+
+### API Errors
+
+On error, the API endpoints will return a non-200 status code and a JSON error object containing a list of errors:
+
+```json
+{
+  "errors": [
+    {"message": "Description of a thing that did not work."},
+    {"message": "..."}
+  ]
 }
 ```
 
