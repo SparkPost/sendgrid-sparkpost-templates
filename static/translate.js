@@ -9,6 +9,7 @@ translationControllers.controller('TranslatorControl', ['$scope', '$http', '$log
     $scope.loading = false;
     $scope.sgEditor = null;
     $scope.spEditor = null;
+    $scope.marketingTemplate = false;
 
     function configureEditor(editor) {
       // Disable Ctrl-L binding - it clashes with a common browser keyboard shortcut

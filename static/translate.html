@@ -54,15 +54,19 @@
       </div>
       <div class="row">
         <div class="col-sm-6">
-          <h3>SendGrid Template
-            <small>
-                <label for="marketingTemplate">
-                  <input type="checkbox" ng-model="marketingTemplate" name="marketingTemplate" id="marketingTemplate"> Marketing Campaign?
-                </label>
-            </small>
-          </h3>
+          <h3>SendGrid Template</h3>
+          <div class="radio">
+            <label>
+              <input type="radio" ng-model="marketingTemplate" checked ng-value="false">
+              Transactional Template
+            </label>
+            &nbsp;&nbsp;&nbsp;
+            <label>
+              <input type="radio" ng-model="marketingTemplate"  ng-value="true">
+              Marketing Template
+            </label>
+          </div>
           <div id="sendgridEditor" ui-ace="{onLoad: sgEditorLoaded}"></div>
-
 
 
           <div ng-show="!marketingTemplate">
@@ -82,7 +86,8 @@
         </div>
         <div class="col-sm-6">
           <h3>SparkPost Template</h3>
-          <div id="sparkPostEditor" ui-ace="{ onLoad: spEditorLoaded}" readonly></div>
+          <div class="radio">&nbsp;</div>
+          <div id="sparkPostEditor" ui-ace="{ onLoad: spEditorLoaded}"></div>
         </div>
       </div>
       <div class="row">

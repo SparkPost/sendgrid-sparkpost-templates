@@ -35,11 +35,13 @@
       <div class="jumbotron">
         <div class="row">
           <div class="col-md-8 col-md-offset-2">
-              <p>From here you can migrate a template from SendGrid to SparkPost.<br/>You will need a few things to hand to get started:</p>
+              <p>From here you can migrate a template from SendGrid to SparkPost. This migration tool will fetch your template from SendGrid, translate it and upload to your SparkPost account.
+
+                <br/><br/>You will need a few things to hand to get started:</p>
               <table class="table-migrate-notes">
                 <tr>
                   <th class="pull-right">SendGrid API Key</th>
-                  <td>Requires <strong>Template Engine</strong> and <strong>Marketing Campaigns</strong> permissions</td>
+                  <td>Requires <code>Template Engine</code> and <code>Marketing Campaigns</code> permissions</td>
                 </tr>
                 <tr>
                   <th class="pull-right">Template ID</th>
@@ -66,12 +68,19 @@
                 <label for="sgAPIKey">SendGrid API key <span class="text-warning" ng-show="migrateFrm.sgAPIKey.$touched && migrateFrm.sgAPIKey.$invalid">8+ chars required</span></label>
                 <input ng-disabled="loading" type="text" ng-model="sgAPIKey" ng-minlength="8" required class="form-control" name="sgAPIKey" />
               </div>
-              <div class="form-group">
-                <div class="checkbox">
-                  <label for="marketingTemplate">
-                    <input type="checkbox" ng-model="marketingTemplate" name="marketingTemplate" id="marketingTemplate"> Migrating Marketing Campaign?
+              <div class="form-group ">
+                <div class="radio">
+                  <label>
+                    <input type="radio" ng-model="marketingTemplate" checked ng-value="false">
+                    Transactional Template
+                  </label>
+                  &nbsp;&nbsp;&nbsp;
+                  <label>
+                    <input type="radio" ng-model="marketingTemplate"  ng-value="true">
+                    Marketing Template
                   </label>
                 </div>
+
                 <label for="sgTpl">SendGrid {{ marketingTemplate ? 'Campaign' : 'Template' }} ID <span class="text-warning" ng-show="migrateFrm.sgTpl.$touched && migrateFrm.sgTpl.$invalid">1+ chars required</span></label>
                 <input ng-disabled="loading" type="text" ng-model="sgTpl" ng-minlength="1" required class="form-control" name="sgTpl" />
 
