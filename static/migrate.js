@@ -4,7 +4,7 @@ var sgMigrationApp = angular.module('sgMigrationApp', ['migrationControllers', '
   , migrationControllers = angular.module('migrationControllers', []);
 
 migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
-  function($scope, $http, $log) {
+  function ($scope, $http, $log) {
     $scope.loading = false;
     $scope.sgAPIKey = '';
     $scope.sgTpl = '';
@@ -15,13 +15,13 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
     $scope.useSandboxDomain = true;
     $scope.sandboxDomain = 'sparkpostbox.com'; //TODO make it configurable?
 
-    $scope.$watch('marketingTemplate', function(newValue){
-      if(!newValue){
+    $scope.$watch('marketingTemplate', function (newValue) {
+      if (!newValue) {
         $scope.useSandboxDomain = true;
       }
     });
 
-    $scope.migrate = function(formIsValid) {
+    $scope.migrate = function (formIsValid) {
       if (!formIsValid) {
         return;
       }
@@ -43,15 +43,23 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
           sparkPostAPIKey: $scope.spAPIKey,
           options: options
         }
-      }).then(function(result) {
+      }).then(function (result) {
         if (result.errors) {
           console.log('Error: ' + JSON.stringify(result.errors, null, '  '));
         } else {
-          showInfo('Migration of ' + $scope.sgTpl + ' succeeded!');
+          var link = '';
+          try {
+            link = ' <a target="_blank" href="https://app.sparkpost.com/templates/edit/' + result.data.response.results.id + '">View Template</a>';
+          } catch (e) {
+            console.error(e);
+            link = '';
+          }
+
+          showInfo('Migration of ' + $scope.sgTpl + ' succeeded! ' + link);
         }
-      }).catch(function(err) {
+      }).catch(function (err) {
         if (err.data.errors) {
-          err.data.errors.forEach(function(error) {
+          err.data.errors.forEach(function (error) {
             showError(error.message);
           });
         } else {
@@ -60,13 +68,13 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
             Check your console for detail and please ping us on <a href="http://slack.sparkpost.com/">Slack</a> or help.`
           );
         }
-      }).finally(function() {
+      }).finally(function () {
         $scope.loading = false;
       });
     };
 
     $scope.alerts = [];
-    $scope.closeAlert = function(idx) {
+    $scope.closeAlert = function (idx) {
       $scope.alerts.splice(idx, 1);
     };
 
@@ -81,6 +89,7 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
     function showError(msg) {
       $scope.alerts.unshift({type: 'danger', msg: markupMsg(msg)});
     }
+
     function markupMsg(msg) {
       return msg.replace(/\n/g, '<br>');
     }
