@@ -53,40 +53,40 @@
         </div>
       </div>
       <div class="row">
-        <div class="col-sm-6">
-          <h3>SendGrid Template</h3>
-          <div class="radio">
-            <label>
-              <input type="radio" ng-model="marketingTemplate" checked ng-value="false">
-              Transactional Template
-            </label>
-            &nbsp;&nbsp;&nbsp;
-            <label>
-              <input type="radio" ng-model="marketingTemplate"  ng-value="true">
-              Marketing Template
-            </label>
+          <div class="col-md-6">
+            <h3>SendGrid Template</h3>
+            <div class="radio">
+              <label>
+                <input type="radio" ng-model="marketingTemplate" checked ng-value="false">
+                Transactional Template
+              </label>
+              &nbsp;&nbsp;&nbsp;
+              <label>
+                <input type="radio" ng-model="marketingTemplate"  ng-value="true">
+                Marketing Template
+              </label>
+            </div>
+            <div ng-show="!marketingTemplate">
+                  <label> Starting delimiter
+                    <input type="text" ng-model="startingDelimiter" />
+                  </label>
+                  <label> Has ending delimiter?
+                    <input type="checkbox" ng-model="endingDelimiter" name="endingDelimiter" id="endingDelimiter">
+                  </label>
+                <div ng-show="startingDelimiter">
+                  Example: <strong>{{startingDelimiter}}tag{{ endingDelimiter ? startingDelimiter : null}}</strong>
+                </div>
+            </div>
           </div>
+          <div class="col-md-6">
+            <h3>SparkPost Template</h3>
+          </div>
+      </div>
+      <div class="row">
+        <div class="col-md-6">
           <div id="sendgridEditor" ui-ace="{onLoad: sgEditorLoaded}"></div>
-
-
-          <div ng-show="!marketingTemplate">
-              Custom delimiter<br/>
-                <label> Starting delimiter
-                  <input type="text" ng-model="startingDelimiter" />
-                </label>
-                <label> Has ending delimiter?
-                  <input type="checkbox" ng-model="endingDelimiter" name="endingDelimiter" id="endingDelimiter">
-                </label>
-              <div ng-show="startingDelimiter">
-                Example: <strong>{{startingDelimiter}}tag{{ endingDelimiter ? startingDelimiter : null}}</strong>
-              </div>
-          </div>
-
-
         </div>
-        <div class="col-sm-6">
-          <h3>SparkPost Template</h3>
-          <div class="radio">&nbsp;</div>
+        <div class="col-md-6">
           <div id="sparkPostEditor" ui-ace="{ onLoad: spEditorLoaded}"></div>
         </div>
       </div>
@@ -98,4 +98,3 @@
     </div>
   </body>
 </html>
-
