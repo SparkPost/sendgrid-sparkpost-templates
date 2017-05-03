@@ -36,7 +36,7 @@ See below for details on [deployment on Heroku](#heroku-deployment), [manual dep
 
 ## Heroku Deployment
 
-You can deploy it directly to Heroku: [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/SparkPost/sendgrid-sparkpost-templates/tree/develop)
+You can deploy it directly to Heroku: [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
 ## Manual Deployment
 
