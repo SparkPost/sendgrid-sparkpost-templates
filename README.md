@@ -23,7 +23,7 @@ See below for details on [deployment on Heroku](#heroku-deployment), [manual dep
 
 | Supported 	                        | Unsupported 	                      |
 |:------------------------------------|:----------------------------- 	    |
-|Sender Fields <br/> `[Sender_Name], [Sender_Name], [Sender_Address], [Sender_City], [Sender_State],[Sender_Zip]` | `[Unsubscribe_Preferences]`
+|Sender Fields <br/> `[Sender_Name], [Sender_Address], [Sender_City], [Sender_State],[Sender_Zip]` | `[Unsubscribe_Preferences]`
 |`[Unsubscribe]*`                      | |
 |`[Weblink]`                          | |
 |`[%email%]`                          | |
