@@ -1,0 +1,115 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SparkPost: SendGrid Template Translation</title>
+
+    <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+
+    <link rel="icon" href="favicon-16.png" sizes="16x16"/>
+    <link rel="icon" href="favicon-32.png" sizes="32x32"/>
+    <link rel="icon" href="favicon-48.png" sizes="48x48"/>
+    <link rel="shortcut icon" href="favicon.ico"/>
+</head>
+<body>
+<div class="titlebar">
+    <a href="https://www.sparkpost.com">
+        <img class="navbar-logo" src="https://developers.sparkpost.com/images/logo-sparkpost-white.png" alt="SparkPost"
+             width="150">
+    </a>
+</div>
+<div class="container-fluid">
+    <div class="jumbotron">
+        <h2>SendGrid Template Translation</h2>
+        <p>
+            <small>This is a SendGrid to SparkPost template translation service. From here you can translate a template
+                from file or migrate one directly from your SendGrid account into SparkPost.
+            </small>
+        </p>
+        <p>
+            <a class="btn btn-success btn-sml" href="migrate.html" role="button">MIGRATE A TEMPLATE &raquo;</a>
+            <a class="btn btn-success btn-sml" href="translate.html" role="button">TRANSLATE TEMPLATE TEXT &raquo;</a>
+        </p>
+    </div>
+    <div class="row">
+        <div class="col-sm-6">
+            <h4 class="pull-center">Transactional Templates</h4>
+            <table class="table table-striped">
+                <tr>
+                    <td>Supported features</td>
+                    <td>Unsupported features</td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul class="supported">
+                            <li><%subject%></li>
+                            <li><%body%></li>
+                            <li><%asm_global_unsubscribe_url%><br/>
+                              <small>Note: You'll need to replace <code>?</code> in <code>&lt;a href="?" data-msys-unsubscribe="1"&gt;unsubs&lt;/a&gt;</code> after translation. </small>
+                            </li>
+                            <li>Custom delimited variables<br/>
+                                <small>
+                                    You need to provide the custom delimiters during translation.
+                                    <br/>Only one type of delimiter is supported.
+                                </small>
+                            </li>
+                        </ul>
+
+                    </td>
+                    <td>
+                        <ul class="unsupported">
+                            <li><%asm_group_unsubscribe_url%></li>
+                            <li><%asm_preferences_url%></li>
+                        </ul>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+        <div class="col-sm-6">
+            <h4 class="pull-center">Marketing Campaign Templates</h4>
+            <table class="table table-striped">
+                <tr>
+                    <td>Supported features</td>
+                    <td>Unsupported features</td>
+                </tr>
+                <tr>
+                    <td>
+                        <ul class="supported">
+                            <li>Sender Fields<br/>
+                                <small>[Sender_Name], [Sender_Address], [Sender_City], [Sender_State], [Sender_Zip]
+                                </small>
+                            </li>
+                            <li>[Unsubscribe]<br/>
+                              <small>Note: You'll need to replace <code>?</code> in <code>&lt;a href="?" data-msys-unsubscribe="1"&gt;unsubs&lt;/a&gt;</code> after translation. </small>
+                            </li>
+                            <li>[Weblink]</li>
+                            <li>[%email%]</li>
+                            <li>[%custom_field%], [%custom_field | default value%]</li>
+                        </ul>
+                    </td>
+                    <td>
+                        <ul class="unsupported">
+                            <li>[Unsubscribe_Preferences]</li>
+                        </ul>
+                    </td>
+
+                </tr>
+            </table>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-12">
+            Note: You'll need replace placeholder (?) with actual URL after translation.<br/>
+        </div>
+    </div>
+</div>
+</body>
+</html>

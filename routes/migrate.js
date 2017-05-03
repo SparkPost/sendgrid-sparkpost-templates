@@ -1,0 +1,93 @@
+'use strict';
+
+let _ = require('lodash')
+  , transactional = require('../lib/transactional')
+  , campaign = require('../lib/campaign')
+  , sendgrid = require('../lib/sendgrid')
+  , sparkpost = require('../lib/sparkpost')
+  , router = require('express').Router();
+
+
+function validate(req) {
+  return new Promise((resolve, reject) => {
+    if (!req.body.hasOwnProperty('sendgridTemplateId')) {
+      reject(new Error('Expected sendgridTemplateId field'));
+    }
+
+    if (!req.body.hasOwnProperty('sendgridAPIKey')) {
+      reject(new Error('Expected sendgridAPIKey field'));
+    }
+
+    if (req.body.hasOwnProperty('useHerokuSPAPIKey') && req.body.useHerokuSPAPIKey) {
+      if (!process.env.SPARKPOST_API_KEY) {
+        reject(new Error('Heroku SparkPost API key not found. Are we running under Heroku with the SparkPost addon?'));
+      }
+    } else if (!req.body.hasOwnProperty('sparkPostAPIKey')) {
+      reject(new Error('Expected sparkPostAPIKey field'));
+    }
+
+    resolve();
+  });
+}
+
+function getApiKey(req) {
+
+  if (process.env.SPARKPOST_API_KEY) {
+    return resolve(process.env.SPARKPOST_API_KEY);
+  }
+  return req.body.sparkPostAPIKey;
+
+}
+
+function getSandboxDomain() {
+  return process.env.SPARKPOST_SANDBOX_DOMAIN || 'sparkpostbox.com';
+}
+
+function extractTemplate(req) {
+  let isSgCampaign = _.get(req, 'body.options.isSendgridCampaign');
+
+  return sendgrid.extractTemplate(req.body.sendgridAPIKey, req.body.sendgridTemplateId, isSgCampaign);
+}
+
+function translate(req, templateData) {
+  let isCampaign = _.get(req, 'body.options.isSendgridCampaign', false)
+    , useSandboxDomain = _.get(req, 'body.options.useSandboxDomain', false)
+    , options = {
+    sandboxDomain: getSandboxDomain(req),
+    useSandboxDomain: useSandboxDomain
+  };
+
+  return new Promise((resolve) => {
+    if (isCampaign) {
+      resolve(campaign.translate(templateData, options));
+    } else {
+      _.extend(options, _.pick(req.body.options, ['startingDelimiter', 'endingDelimiter']));
+      resolve(transactional.translate(templateData, options));
+    }
+  });
+}
+router.post('/', function (req, res) {
+  let spAPIKey = getApiKey(req);
+
+  return validate(req)
+    .then(() => {
+      return extractTemplate(req)
+    })
+    .then((templateData)=> {
+      return translate(req, templateData);
+    })
+    .then((translatedTemplate) => {
+      return sparkpost.save(translatedTemplate, spAPIKey);
+    })
+    .then((result) => {
+      return res.json({result: true, response: result});
+    })
+    .catch(err => {
+      console.log(err);
+      res.clientError(err.message);
+    });
+
+});
+
+module.exports = router;
+

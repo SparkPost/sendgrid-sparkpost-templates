@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" ng-app="sgMigrationApp">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+
+    <title>SparkPost: SendGrid Template Translation</title>
+
+    <link href="vendor/bootstrap/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="vendor/font-awesome/css/font-awesome.min.css" rel="stylesheet">
+    <link href="main.css" rel="stylesheet">
+
+    <link rel="icon" href="favicon-16.png" sizes="16x16" />
+    <link rel="icon" href="favicon-32.png" sizes="32x32" />
+    <link rel="icon" href="favicon-48.png" sizes="48x48" />
+    <link rel="shortcut icon" href="favicon.ico" />
+
+    <script src="vendor/angular/angular.js"></script>
+    <script src="vendor/angular-sanitize/angular-sanitize.js"></script>
+    <script src="vendor/jquery/dist/jquery.min.js"></script>
+    <script src="vendor/bootstrap/dist/js/bootstrap.min.js"></script>
+    <script src="vendor/angular-bootstrap/ui-bootstrap-tpls.js"></script>
+    <script src="migrate.js"></script>
+  </head>
+  <body ng-controller="MigrateControl" ng-class="loading ? 'loading' : ''">
+    <div class="titlebar">
+      <a href="https://www.sparkpost.com">
+        <img class="navbar-logo" src="https://developers.sparkpost.com/images/logo-sparkpost-white.png" alt="SparkPost" width="150">
+      </a>
+    </div>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <div class="jumbotron">
+            <p>From here you can migrate a template from SendGrid to SparkPost. This migration tool will fetch your template from SendGrid, translate it and upload to your SparkPost account.
+              <br/><br/>You will need a few things to hand to get started:</p>
+          </div>
+        </div>
+      </div>
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <p class="pull-center">
+            <strong>SendGrid API Key</strong> Requires <code>Template Engine</code> and <code>Marketing Campaigns</code> permissions
+            <hr/>
+          </p>
+          <p class="pull-center">
+            <strong>Template ID</strong> Transactional template or campaign ID
+            <hr/>
+          </p>
+          <p class="pull-center">
+            <strong>SparkPost API Key</strong> Requires <code>Templates Read/Write</code> privileges<br>
+            <em>Note: If you're running the SparkPost Heroku addon, we have your API key in hand already.</em>
+            <hr/>
+          </p>
+        </div>
+      </div>
+
+      <div class="row">
+        <div class="col-md-8 col-md-offset-2">
+          <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
+            <div ng-bind-html="alert.msg"></div>
+          </uib-alert>
+          <form name="migrateFrm" ng-submit="migrate(migrateFrm.$valid)" novalidate>
+            <div class="form-group">
+              <label for="sgAPIKey">SendGrid API key <span class="text-warning" ng-show="migrateFrm.sgAPIKey.$touched && migrateFrm.sgAPIKey.$invalid">8+ chars required</span></label>
+              <input ng-disabled="loading" type="text" ng-model="sgAPIKey" ng-minlength="8" required class="form-control" name="sgAPIKey" />
+            </div>
+            <div class="form-group ">
+              <div class="radio">
+                <label>
+                  <input type="radio" ng-model="marketingTemplate" checked ng-value="false">
+                  Transactional Template
+                </label>
+                &nbsp;&nbsp;&nbsp;
+                <label>
+                  <input type="radio" ng-model="marketingTemplate"  ng-value="true">
+                  Marketing Template
+                </label>
+              </div>
+
+              <div class="form-group" ng-show="!marketingTemplate">
+                  <label> Starting delimiter
+                    <input type="text" ng-model="startingDelimiter" />
+                  </label>
+                  <label> Has ending delimiter?
+                    <input type="checkbox" ng-model="endingDelimiter" name="endingDelimiter" id="endingDelimiter">
+                  </label>
+                  <div ng-show="startingDelimiter">
+                    Example: <strong>{{startingDelimiter}}tag{{ endingDelimiter ? startingDelimiter : null}}</strong>
+                  </div>
+              </div>
+
+              <label for="sgTpl">SendGrid {{ marketingTemplate ? 'Campaign' : 'Template' }} ID <span class="text-warning" ng-show="migrateFrm.sgTpl.$touched && migrateFrm.sgTpl.$invalid">1+ chars required</span></label>
+              <input ng-disabled="loading" type="text" ng-model="sgTpl" ng-minlength="1" required class="form-control" name="sgTpl" />
+
+            </div>
+
+            <div class="form-group">
+              <label for="spAPIKey">SparkPost API key <span class="text-warning" ng-show="migrateFrm.spAPIKey.$touched && migrateFrm.spAPIKey.$invalid">8+ chars required</span></label>
+              <input ng-disabled="loading || useHerokuSPAPIKey" type="text" ng-model="spAPIKey" ng-minlength="8" ng-required="!useHerokuSPAPIKey" class="form-control" name="spAPIKey" />
+            </div>
+            <div class="form-group">
+              <div class="checkbox">
+                <label for="useHerokuSPAPIKey">
+                  <input type="checkbox" ng-model="useHerokuSPAPIKey" name="useHerokuSPAPIKey" id="useHerokuSPAPIKey"> Use your Heroku SparkPost addon key
+                </label>
+              </div>
+              <div class="checkbox">
+                <label for="useSandboxDomain">
+                  <input type="checkbox" ng-model="useSandboxDomain" name="useSandboxDomain" id="useSandboxDomain" ng-disabled="!marketingTemplate"
+                  > Use sandbox domain <code>{{sandboxDomain}}</code> as the from address
+                </label>
+              </div>
+            </div>
+            <button ng-disabled="loading || migrateFrm.$invalid" type="submit" class="btn btn-success btn-lg">Begin migration</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </body>
+</html>
