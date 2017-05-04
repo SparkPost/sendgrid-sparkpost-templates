@@ -17,7 +17,6 @@ See below for details on [deployment on Heroku](#heroku-deployment), [manual dep
 | `<%asm_global_unsubscribe_url%>`*   | |
 | Custom delimited variables**   | |
 
-\* Extra inputs required
 
 ## Marketing Campaigns
 
@@ -29,7 +28,7 @@ See below for details on [deployment on Heroku](#heroku-deployment), [manual dep
 |`[%email%]`                          | |
 |<code>[%custom_field%]`, `[%custom_field &#124; default value%]</code> | |
 
-\* You need to replace placeholder (`?`) after translation
+\* You need to replace placeholder (`?`) after translation.
 
 \** You need specify the custom delimiters during translation. Only one type of delimiter is supported.
 
