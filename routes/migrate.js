@@ -66,8 +66,10 @@ function translate(req, templateData) {
     }
   });
 }
+
 router.post('/', function (req, res) {
-  let spAPIKey = getApiKey(req);
+  let spAPIKey = getApiKey(req)
+    , warnings;
 
   return validate(req)
     .then(() => {
@@ -77,10 +79,11 @@ router.post('/', function (req, res) {
       return translate(req, templateData);
     })
     .then((translatedTemplate) => {
-      return sparkpost.save(translatedTemplate, spAPIKey);
+      warnings = translatedTemplate.warnings;
+      return sparkpost.save(translatedTemplate.template, spAPIKey);
     })
     .then((result) => {
-      return res.json({result: true, response: result});
+      return res.json({result: true, response: result, warnings: warnings});
     })
     .catch(err => {
       console.log(err);

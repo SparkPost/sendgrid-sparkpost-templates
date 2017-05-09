@@ -6,33 +6,43 @@ const _ = require('lodash');
 const transactional = require('../../../lib/transactional');
 const version = require('../../../package.json').version;
 
+const globalUnsub = '<a href="?" data-msys-unsubscribe="1">Unsubscribe</a>';
+
 describe('Transactional', function () {
   describe('translateText', function () {
     let translateText = transactional.translateText;
 
+    it('should produce translated text and a list of warnings', function () {
+      let result = translateText('');
+      expect(result).to.have.keys(['text', 'warnings']);
+      expect(result.text).to.be.a.string;
+      expect(result.warnings).to.be.an.array;
+    });
+
     it('should translate <%body%>', function () {
-      expect(translateText('<%body%>')).to.be.equal('{{ body }}');
-      expect(translateText('<%body%><%body%>')).to.be.equal('{{ body }}<%body%>'); //replace only once
-      expect(translateText('<% body %>')).to.be.equal('<% body %>');
+      expect(translateText('<%body%>').text).to.be.equal('{{ body }}');
+      expect(translateText('<%body%><%body%>').text).to.be.equal('{{ body }}<%body%>'); //replace only once
+      expect(translateText('<% body %>').text).to.be.equal('<% body %>');
     });
 
     it('should translate <%subject%>', function () {
-      expect(translateText('<%subject%>')).to.be.equal('{{ subject }}');
-      expect(translateText('<%subject%><%subject%>')).to.be.equal('{{ subject }}<%subject%>'); //replace only once
-      expect(translateText('<% subject %>')).to.be.equal('<% subject %>');
+      expect(translateText('<%subject%>').text).to.be.equal('{{ subject }}');
+      expect(translateText('<%subject%><%subject%>').text).to.be.equal('{{ subject }}<%subject%>'); //replace only once
+      expect(translateText('<% subject %>').text).to.be.equal('<% subject %>');
     });
 
     it('should translate global_unsub', function () {
-      expect(translateText('<%asm_global_unsubscribe_url%>')).to.be.equal('<a href="?" data-msys-unsubscribe="1">unsubs</a>');
+      expect(translateText('<%asm_global_unsubscribe_url%>').text).to.be.equal(globalUnsub);
 
       //multiple occurrences
-      let expected = '<a href="?" data-msys-unsubscribe="1">unsubs</a><a href="?" data-msys-unsubscribe="1">unsubs</a>';
-      expect(translateText('<%asm_global_unsubscribe_url%><%asm_global_unsubscribe_url%>')).to.be.equal(expected);
+      let expected = globalUnsub + globalUnsub;
+      expect(translateText('<%asm_global_unsubscribe_url%><%asm_global_unsubscribe_url%>').text).to.be.equal(expected);
     });
 
     it('should correctly translate mix of tags', function () {
-      var expected = '<div>{{ body }}</div>{{ subject }}<a href="?" data-msys-unsubscribe="1">unsubs</a> <p><a href="?" data-msys-unsubscribe="1">unsubs</a></p>';
-      expect(translateText('<div><%body%></div><%subject%><%asm_global_unsubscribe_url%> <p><%asm_global_unsubscribe_url%></p>')).to.be.equal(expected);
+      var input = '<div><%body%></div><%subject%><%asm_global_unsubscribe_url%> <p><%asm_global_unsubscribe_url%></p>';
+      var expected = `<div>{{ body }}</div>{{ subject }}${globalUnsub} <p>${globalUnsub}</p>`;
+      expect(translateText(input).text).to.be.equal(expected);
     });
 
     describe('custom delimiters', function () {
@@ -46,8 +56,8 @@ describe('Transactional', function () {
       });
 
       it('should translate with custom delimiter', function () {
-        expect(translateText('<%body%> :name:', opts)).to.be.equal('{{ body }} {{ name }}');
-        expect(translateText(':name: :email:', opts)).to.be.equal('{{ name }} {{ email }}');
+        expect(translateText('<%body%> :name:', opts).text).to.be.equal('{{ body }} {{ name }}');
+        expect(translateText(':name: :email:', opts).text).to.be.equal('{{ name }} {{ email }}');
       });
 
       it('should translate with different delimiter', function () {
@@ -56,22 +66,22 @@ describe('Transactional', function () {
           endingDelimiter: '#'
         };
 
-        expect(translateText('<%body%> #name#', opts)).to.be.equal('{{ body }} {{ name }}');
-        expect(translateText(':name: #email#', opts)).to.be.equal(':name: {{ email }}');
-        expect(translateText('#name# #email# :email:', opts)).to.be.equal('{{ name }} {{ email }} :email:');
+        expect(translateText('<%body%> #name#', opts).text).to.be.equal('{{ body }} {{ name }}');
+        expect(translateText(':name: #email#', opts).text).to.be.equal(':name: {{ email }}');
+        expect(translateText('#name# #email# :email:', opts).text).to.be.equal('{{ name }} {{ email }} :email:');
       });
 
 
       it('should translate without ending delimiter', function () {
         opts.endingDelimiter = null;
-        expect(translateText('<%body%> :name: :email', opts)).to.be.equal('{{ body }} {{ name }}: {{ email }}');
-        expect(translateText(':name: :email:', opts)).to.be.equal('{{ name }}: {{ email }}:');
+        expect(translateText('<%body%> :name: :email', opts).text).to.be.equal('{{ body }} {{ name }}: {{ email }}');
+        expect(translateText(':name: :email:', opts).text).to.be.equal('{{ name }}: {{ email }}:');
       });
 
       it('should not translate custom delimiters if not specified', function () {
         opts = {};
-        expect(translateText('<%body%> :name: :email', opts)).to.be.equal('{{ body }} :name: :email');
-        expect(translateText(':name: :email:', opts)).to.be.equal(':name: :email:');
+        expect(translateText('<%body%> :name: :email', opts).text).to.be.equal('{{ body }} :name: :email');
+        expect(translateText(':name: :email:', opts).text).to.be.equal(':name: :email:');
       });
 
       it('should not translate with incorrect delimiters', function () {
@@ -80,7 +90,7 @@ describe('Transactional', function () {
           endingDelimiter: '-'
         };
 
-        expect(translateText(':name:', opts)).to.be.equal(':name:');
+        expect(translateText(':name:', opts).text).to.be.equal(':name:');
       });
 
     });
@@ -122,8 +132,12 @@ describe('Transactional', function () {
       };
     });
 
+    it('should produce translated template and a list of warnings', function () {
+      expect(translate(sgTemplate, options)).to.have.keys(['template', 'warnings']);
+    });
+
     it('should translate correctly', function () {
-      expect(translate(sgTemplate, options)).to.be.deep.equal(spTemplate);
+      expect(translate(sgTemplate, options).template).to.be.deep.equal(spTemplate);
     });
 
     it('should throw if sandbox domain not provided', function(){
