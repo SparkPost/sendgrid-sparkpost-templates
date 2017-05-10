@@ -16,7 +16,6 @@ router.post('/', function (req, res) {
     return;
   }
 
-
   try {
     if (isSendgridCampaign) {
       translatedTemplate = campaign.translateText(req.body.sendgridTemplate);

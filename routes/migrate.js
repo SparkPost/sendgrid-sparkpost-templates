@@ -31,12 +31,10 @@ function validate(req) {
 }
 
 function getApiKey(req) {
-
   if (process.env.SPARKPOST_API_KEY) {
     return resolve(process.env.SPARKPOST_API_KEY);
   }
   return req.body.sparkPostAPIKey;
-
 }
 
 function getSandboxDomain() {
@@ -101,7 +99,6 @@ router.post('/', function (req, res) {
       console.dir(err);
       res.clientError(err.message);
     });
-
 });
 
 module.exports = router;

@@ -12,9 +12,9 @@ See below for details on [deployment on Heroku](#heroku-deployment), [manual dep
 
 | Supported 	                        | Unsupported 	                      |
 |:------------------------------------|:----------------------------- 	    |
-| `<%subject%>`              	        | `<%asm_group_unsubscribe_url%>` 	
-| `<%body%>` 	                        | `<%asm_preferences_url%>` 	
-| `<%asm_global_unsubscribe_url%>`*   | |
+| `<%subject%>`              	        | `<%asm_group_unsubscribe_url%>`
+| `<%body%>` 	                        | `<%asm_preferences_url%>`
+| `<%asm_global_unsubscribe_url%>`*   | Sections |
 | Custom delimited variables**   | |
 
 
@@ -75,11 +75,11 @@ Request:
 POST /api/translate HTTP/1.1
 Content-Type: application/json
 
-sendgridTemplate: "string",
+sendgridTemplate: "SendGrid template content",
 options: {
-  isCampaign: "boolean",
-  startingDelimiter: "string",
-  endingDelimiter: "string"
+  isCampaign: false,
+  startingDelimiter: "%",
+  endingDelimiter: "%"
 }
 
 ```
@@ -91,7 +91,10 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "sparkPostTemplate": "string"
+  "sparkPostTemplate": "Translated template content",
+  "warnings": [
+    "<%asm_group_unsubscribe_url%> is unsupported. Treating a normal substitution variable."
+  ]
 }
 ```
 
@@ -108,15 +111,15 @@ POST /api/migrate HTTP/1.1
 Content-Type: application/json
 
 {
-  sendgridAPIKey: "string",
-  sendgridTemplateId: "string",
-  sparkPostAPIKey: "string",
+  sendgridAPIKey: "your-sendgrid-api-key",
+  sendgridTemplateId: "your-sendgrid-template-or-campaign-id",
+  sparkPostAPIKey: "your-sparkpost-api-key",
   options: {
-    useHerokuSPAPIKey: "boolean",
-    isSendgridCampaign: "boolean",
-    useSandboxDomain: "boolean",
-    startingDelimiter: "string"
-    endingDelimiter: "string"
+    useHerokuSPAPIKey: false,
+    isSendgridCampaign: true,
+    useSandboxDomain: true,
+    startingDelimiter: "%"
+    endingDelimiter: "%"
   }
 }
 
@@ -129,7 +132,10 @@ HTTP/1.1 200 OK
 Content-Type: application/json
 
 {
-  "result": true
+  "result": true,
+  "warnings": [
+    "<%asm_group_unsubscribe_url%> is unsupported. Treating a normal substitution variable."
+  ]
 }
 ```
 
