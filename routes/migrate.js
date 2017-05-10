@@ -46,7 +46,11 @@ function getSandboxDomain() {
 function extractTemplate(req) {
   let isSgCampaign = _.get(req, 'body.options.isSendgridCampaign');
 
-  return sendgrid.extractTemplate(req.body.sendgridAPIKey, req.body.sendgridTemplateId, isSgCampaign);
+  return sendgrid.extractTemplate(req.body.sendgridAPIKey, req.body.sendgridTemplateId, isSgCampaign)
+  .catch(err => Promise.reject({
+    name: err.name,
+    message: `Error encountered while extracting template ${req.body.sendgridTemplateId} from SendGrid: ${err.error.response.body.errors.map(e => e.message).join('\n')}`
+  }));
 }
 
 function translate(req, templateData) {
@@ -67,6 +71,14 @@ function translate(req, templateData) {
   });
 }
 
+function save(template, apiKey) {
+  return sparkpost.save(template, apiKey)
+  .catch(err => Promise.reject({
+    name: err.name,
+    message: `Error encountered while saving template ${template.name} to SparkPost: ${err.message}`
+  }));
+}
+
 router.post('/', function (req, res) {
   let spAPIKey = getApiKey(req)
     , warnings;
@@ -80,13 +92,13 @@ router.post('/', function (req, res) {
     })
     .then((translatedTemplate) => {
       warnings = translatedTemplate.warnings;
-      return sparkpost.save(translatedTemplate.template, spAPIKey);
+      return save(translatedTemplate.template, spAPIKey);
     })
     .then((result) => {
       return res.json({result: true, response: result, warnings: warnings});
     })
     .catch(err => {
-      console.log(err);
+      console.dir(err);
       res.clientError(err.message);
     });
 
