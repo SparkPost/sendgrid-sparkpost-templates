@@ -8,12 +8,14 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
     $scope.loading = false;
     $scope.sgAPIKey = '';
     $scope.sgTpl = '';
-    $scope.startingDelimiter = null;
     $scope.marketingTemplate = false;
     $scope.spAPIKey = '';
     $scope.useHerokuSPAPIKey = false;
     $scope.useSandboxDomain = true;
     $scope.sandboxDomain = 'sparkpostbox.com'; //TODO make it configurable?
+
+    $scope.startingDelimiter = '%';
+    $scope.endingDelimiter = true;
 
     $scope.$watch('marketingTemplate', function (newValue) {
       if (!newValue) {

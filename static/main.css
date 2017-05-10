@@ -151,3 +151,11 @@ hr {
   margin-top: 0;
   margin-bottom: 0;
 }
+
+#delimiterCtrls label {
+  padding-right: 1em;
+}
+
+.varExample {
+  font-style: italic;
+}

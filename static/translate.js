@@ -11,6 +11,9 @@ translationControllers.controller('TranslatorControl', ['$scope', '$http', '$log
     $scope.spEditor = null;
     $scope.marketingTemplate = false;
 
+    $scope.startingDelimiter = '%';
+    $scope.endingDelimiter = true;
+
     function configureEditor(editor) {
       // Disable Ctrl-L binding - it clashes with a common browser keyboard shortcut
       editor.commands.addCommand({
@@ -46,7 +49,6 @@ translationControllers.controller('TranslatorControl', ['$scope', '$http', '$log
         showError('Empty SendGrid Template');
         return;
       }
-      console.log($scope.startingDelimiter);
       $scope.spEditor.setValue('');
       $scope.loading = true;
       clearAlerts();
