@@ -8,12 +8,14 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
     $scope.loading = false;
     $scope.sgAPIKey = '';
     $scope.sgTpl = '';
-    $scope.startingDelimiter = null;
     $scope.marketingTemplate = false;
     $scope.spAPIKey = '';
     $scope.useHerokuSPAPIKey = false;
     $scope.useSandboxDomain = true;
     $scope.sandboxDomain = 'sparkpostbox.com'; //TODO make it configurable?
+
+    $scope.startingDelimiter = '%';
+    $scope.endingDelimiter = true;
 
     $scope.$watch('marketingTemplate', function (newValue) {
       if (!newValue) {
@@ -34,6 +36,7 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
         endingDelimiter: !$scope.marketingTemplate && $scope.endingDelimiter ? $scope.startingDelimiter : undefined
       };
 
+      clearAlerts();
       $http({
         method: 'POST',
         url: '/api/migrate',
@@ -54,6 +57,10 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
             console.error(e);
             link = '';
           }
+
+          result.data.warnings.forEach(function(warning) {
+            showWarning(warning);
+          });
 
           showInfo('Migration of ' + $scope.sgTpl + ' succeeded! ' + link);
         }
@@ -76,6 +83,10 @@ migrationControllers.controller('MigrateControl', ['$scope', '$http', '$log',
     $scope.alerts = [];
     $scope.closeAlert = function (idx) {
       $scope.alerts.splice(idx, 1);
+    };
+
+    function clearAlerts() {
+      $scope.alerts = [];
     };
 
     function showInfo(msg) {

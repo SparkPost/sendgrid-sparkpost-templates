@@ -81,16 +81,17 @@
                 </label>
               </div>
 
-              <div class="form-group" ng-show="!marketingTemplate">
-                  <label> Starting delimiter
-                    <input type="text" ng-model="startingDelimiter" />
-                  </label>
-                  <label> Has ending delimiter?
-                    <input type="checkbox" ng-model="endingDelimiter" name="endingDelimiter" id="endingDelimiter">
-                  </label>
-                  <div ng-show="startingDelimiter">
-                    Example: <strong>{{startingDelimiter}}tag{{ endingDelimiter ? startingDelimiter : null}}</strong>
-                  </div>
+              <div class="form-group" id="delimiterCtrls" ng-show="!marketingTemplate">
+                <label>Delimiter:
+                    <input type="text" size="2" ng-model="startingDelimiter" />
+                </label>
+                <label>
+                  <input type="checkbox" ng-model="endingDelimiter" name="endingDelimiter" id="endingDelimiter">
+                  Ending delimiter?
+                </label>
+                <span class="varExample">
+                (Example: <strong>{{startingDelimiter}}variable{{ endingDelimiter ? startingDelimiter : null}}</strong>)
+                </span>
               </div>
 
               <label for="sgTpl">SendGrid {{ marketingTemplate ? 'Campaign' : 'Template' }} ID <span class="text-warning" ng-show="migrateFrm.sgTpl.$touched && migrateFrm.sgTpl.$invalid">1+ chars required</span></label>

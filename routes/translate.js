@@ -16,7 +16,6 @@ router.post('/', function (req, res) {
     return;
   }
 
-
   try {
     if (isSendgridCampaign) {
       translatedTemplate = campaign.translateText(req.body.sendgridTemplate);
@@ -24,7 +23,7 @@ router.post('/', function (req, res) {
       translatedTemplate = transactional.translateText(req.body.sendgridTemplate, _.pick(options, ['startingDelimiter', 'endingDelimiter']));
     }
 
-    res.json({sparkPostTemplate: translatedTemplate});
+    res.json({sparkPostTemplate: translatedTemplate.text, warnings: translatedTemplate.warnings});
 
   } catch (err) {
     if (!errors.errorResponse(err, res)) {

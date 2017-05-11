@@ -66,16 +66,17 @@
                 Marketing Template
               </label>
             </div>
-            <div ng-show="!marketingTemplate">
-                  <label> Starting delimiter
-                    <input type="text" ng-model="startingDelimiter" />
-                  </label>
-                  <label> Has ending delimiter?
-                    <input type="checkbox" ng-model="endingDelimiter" name="endingDelimiter" id="endingDelimiter">
-                  </label>
-                <div ng-show="startingDelimiter">
-                  Example: <strong>{{startingDelimiter}}tag{{ endingDelimiter ? startingDelimiter : null}}</strong>
-                </div>
+            <div id="delimiterCtrls" ng-show="!marketingTemplate">
+              <label>Delimiter:
+                  <input type="text" size="2" ng-model="startingDelimiter" />
+              </label>
+              <label>
+                <input type="checkbox" ng-model="endingDelimiter" name="endingDelimiter" id="endingDelimiter">
+                Ending delimiter?
+              </label>
+              <span class="varExample">
+              (Example: <strong>{{startingDelimiter}}variable{{ endingDelimiter ? startingDelimiter : null}}</strong>)
+              </span>
             </div>
           </div>
           <div class="col-md-6">
