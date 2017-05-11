@@ -50,13 +50,10 @@
                 <ul class="supported">
                   <li><code>&lt;%subject%&gt;</code></li>
                   <li><code>&lt;%body%&gt;</code></li>
-                  <li><code>&lt;%asm_global_unsubscribe_url%&gt;</code><br/>
-                    <small>Note: You'll need to replace <code>?</code> in <code>&lt;a href="?" data-msys-unsubscribe="1"&gt;unsubs&lt;/a&gt;</code> after translation. </small>
-                  </li>
+                  <li><code>&lt;%asm_global_unsubscribe_url%&gt;</code></li>
                   <li>Custom delimited variables<br/>
                     <small>
-                      You need to provide your chosen delimiter during translation.
-                      <br/>Only one delimiter is supported in each template.
+                      Note: You need to provide your chosen delimiter during translation. Only one delimiter is supported in each template.
                     </small>
                   </li>
                 </ul>
@@ -84,20 +81,21 @@
               <td>
                 <ul class="supported">
                   <li>Sender Fields<br/>
-                    <small>[Sender_Name], [Sender_Address], [Sender_City], [Sender_State], [Sender_Zip]
+                    <small><code>[Sender_Name]</code>, <code>[Sender_Address]</code>, <code>[Sender_City]</code>, <code>[Sender_State]</code>, <code>[Sender_Zip]</code>
                     </small>
                   </li>
-                  <li>[Unsubscribe]<br/>
-                    <small>Note: You'll need to replace <code>?</code> in <code>&lt;a href="?" data-msys-unsubscribe="1"&gt;unsubs&lt;/a&gt;</code> after translation. </small>
-                  </li>
-                  <li>[Weblink]</li>
-                  <li>[%email%]</li>
-                  <li>[%custom_field%], [%custom_field | default value%]</li>
+                  <li><code>[Unsubscribe]</code></li>
+                  <li><code>[Weblink]</code></li>
+                  <li><code>[%email%]</code></li>
+                  <li>Custom fields<br/>
+                  e.g. <code>[%custom_field%]</code></li>
+                  <li>Custom fields with default values<br/>
+                  e.g. <code>[%custom_field | default value%]</code></li>
                 </ul>
               </td>
               <td>
                 <ul class="unsupported">
-                  <li>[Unsubscribe_Preferences]</li>
+                  <li><code>[Unsubscribe_Preferences]</code></li>
                 </ul>
               </td>
 

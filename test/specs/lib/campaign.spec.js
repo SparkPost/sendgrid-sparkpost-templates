@@ -6,9 +6,21 @@ const _ = require('lodash');
 const campaign = require('../../../lib/campaign');
 const version = require('../../../package.json').version;
 
+const unsubsTranslation = '<a href="?" data-msys-unsubscribe="1">Unsubscribe</a>';
+
 describe('Marketing Campaign', function () {
   describe('translateText', function () {
-    let translateText = campaign.translateText;
+
+    function translateText(str) {
+      return campaign.translateText(str).text;
+    }
+
+    it('should produce translated text and a list of warnings', function () {
+      let result = campaign.translateText('');
+      expect(result).to.have.keys(['text', 'warnings']);
+      expect(result.text).to.be.a.string;
+      expect(result.warnings).to.be.an.array;
+    });
 
     it('should translate sender fields tags', function () {
       expect(translateText('[Sender_Name]')).to.be.equal("{{ Sender_Name or '' }}");
@@ -27,10 +39,10 @@ describe('Marketing Campaign', function () {
     });
 
     it('should translate Unsubscribe tag', function () {
-      expect(translateText('[Unsubscribe]')).to.be.equal('<a href="?" data-msys-unsubscribe="1">unsubs</a>');
+      expect(translateText('[Unsubscribe]')).to.be.equal(unsubsTranslation);
 
       //multiples
-      let expected = '<a href="?" data-msys-unsubscribe="1">unsubs</a><a href="?" data-msys-unsubscribe="1">unsubs</a>';
+      let expected = unsubsTranslation + unsubsTranslation;
       expect(translateText('[Unsubscribe][Unsubscribe]')).to.be.equal(expected);
     });
 
@@ -60,16 +72,19 @@ describe('Marketing Campaign', function () {
 
     it('should correctly translate mix of tags', function () {
       let text = "<div>[Sender_Zip]</div>[Unsubscribe] <p>[Unsubscribe]</p>[%custom_field%]; [%with_default | 'default'%]";
-      let expected = "<div>{{ Sender_Zip or '' }}</div><a href=\"?\" data-msys-unsubscribe=\"1\">unsubs</a> <p>\<a " +
-        "href=\"?\" data-msys-unsubscribe=\"1\">unsubs</a></p>{{ custom_field }}; {{ with_default or 'default' }}";
+      let expected = `<div>{{ Sender_Zip or '' }}</div>${unsubsTranslation} <p>${unsubsTranslation}</p>{{ custom_field }}; {{ with_default or 'default' }}`;
       expect(translateText(text)).to.be.equal(expected);
     });
 
   });
 
   describe('translate', function () {
-    let translate = campaign.translate
-      , sgTemplate, spTemplate, options;
+    let sgTemplate, spTemplate, options;
+
+    function translate(str, opts) {
+      return campaign.translate(str, opts).template;
+    }
+
 
     beforeEach(function () {
       sgTemplate = {
