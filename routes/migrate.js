@@ -96,7 +96,6 @@ router.post('/', function (req, res) {
       return res.json({result: true, response: result, warnings: warnings});
     })
     .catch(err => {
-      console.dir(err);
       res.clientError(err.message);
     });
 });
