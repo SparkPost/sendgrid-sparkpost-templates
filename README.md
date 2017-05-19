@@ -37,6 +37,11 @@ See below for details on [deployment on Heroku](#heroku-deployment), [manual dep
 
 You can deploy it directly to Heroku: [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy)
 
+### Optional: SparkPost Add-On
+
+If you run this app on Heroku but do not yet have a SparkPost account, you could choose the [SparkPost Heroku add-on](https://elements.heroku.com/addons/sparkpost).
+Follow the usual steps through your Heroku dashboard or using the `heroku` command line tool to install the add-on on your Heroku app.
+
 ## Manual Deployment
 
 If you prefer you can deploy it into your own environment using the instructions below.
