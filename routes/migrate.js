@@ -45,10 +45,19 @@ function extractTemplate(req) {
   let isSgCampaign = _.get(req, 'body.options.isSendgridCampaign');
 
   return sendgrid.extractTemplate(req.body.sendgridAPIKey, req.body.sendgridTemplateId, isSgCampaign)
-  .catch(err => Promise.reject({
-    name: err.name,
-    message: `Error encountered while extracting template ${req.body.sendgridTemplateId} from SendGrid: ${err.error.response.body.errors.map(e => e.message).join('\n')}`
-  }));
+  .catch(err => {
+    const resp = err.error.response;
+    let errStr;
+    if (resp.body.errors) {
+      errStr = resp.body.errors.map(e => e.message).join('\n');
+    } else {
+      errStr = resp.body.error;
+    }
+    return Promise.reject({
+      name: err.name,
+      message: `Error encountered while extracting template from SendGrid: ${errStr} (status=${resp.statusCode})`
+    });
+  });
 }
 
 function translate(req, templateData) {
