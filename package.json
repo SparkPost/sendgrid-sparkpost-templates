@@ -12,6 +12,10 @@
   "contributors": [
     "Ewan Dennis <ewandennis@users.noreply.github.com>"
   ],
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/SparkPost/sendgrid-sparkpost-templates.git"
+  },
   "license": "Apache-2.0",
   "dependencies": {
     "body-parser": "~1.15.0",
