@@ -48,7 +48,7 @@
         <div class="col-md-8 col-md-offset-2">
           <uib-alert ng-repeat="alert in alerts" type="{{alert.type}}" close="closeAlert($index)">
             <div><pre ng-show="alert.pre" ng-bind="alert.msg"></pre></div>
-            <div ng-show="!alert.pre" ng-bind="alert.msg"></div>
+            <div ng-show="!alert.pre" ng-bind-html="alert.msg"></div>
           </uib-alert>
         </div>
       </div>
